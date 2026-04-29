@@ -2,6 +2,7 @@
 
 use App\Models\Product;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 test('unauth user cannot access product', function () {
     $this->get('/product')
@@ -37,4 +38,35 @@ test('homepage contain filled table', function () {
                 return $collection->contains($product);
             }
         );
+});
+
+test('paginated table', function () {
+    $user = User::factory()->create();
+
+    $products = Product::factory(11)->create();
+
+    $lastProduct = $products->last();
+
+    $this->actingAs($user)->get('/product')
+        ->assertStatus(200)
+        ->assertViewHas('products', function ($collection) use ($lastProduct) {
+            return !$collection->contains($lastProduct);
+        });
+});
+
+test('owner can access create', function () {
+    $adminRole = Role::create(['name' => 'admin']);
+
+    $admin = User::factory()->create();
+    $admin->assignRole($adminRole);
+
+    $this->actingAs($admin)->get('/product/create')
+        ->assertStatus(200);
+});
+
+test('guest cannot access create', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->get('/product/create')
+        ->assertStatus(403);
 });

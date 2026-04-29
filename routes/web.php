@@ -9,6 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('product', [ProductController::class, 'index'])->middleware('auth');
+Route::get('product/create', [ProductController::class, 'create'])->middleware('role:admin');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
