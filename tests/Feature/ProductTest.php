@@ -93,3 +93,51 @@ test('create product success', function () {
     expect($lastProduct->name)->toBe($product['name']);
     expect($lastProduct->price)->toBeInt($product['price']);
 });
+
+test('edit contains correct value', function () {
+    $adminRole = Role::create(['name' => 'admin']);
+
+    $admin = User::factory()->create();
+    $admin->assignRole($adminRole);
+
+    $product = Product::factory()->create();
+
+    $this->actingAs($admin)
+        ->get('product/edit/' . $product->id)
+        ->assertStatus(200)
+        ->assertSee('value="' . $product->name . '"', false)
+        ->assertSee('value="' . $product->price . '"', false);
+});
+
+test('validation error redirect to form', function () {
+    $adminRole = Role::create(['name' => 'admin']);
+
+    $admin = User::factory()->create();
+    $admin->assignRole($adminRole);
+
+    $product = Product::factory()->create();
+
+    $this->actingAs($admin)
+        ->put('product/edit/' . $product->id, [
+            'name' => '',
+            'price' => ''
+        ])
+        ->assertStatus(302)
+        ->assertInvalid(['name', 'price']);
+});
+
+test('delete product', function () {
+    $adminRole = Role::create(['name' => 'admin']);
+
+    $admin = User::factory()->create();
+    $admin->assignRole($adminRole);
+
+    $product = Product::factory()->create();
+
+    $this->actingAs($admin)
+        ->delete('product/delete/' . $product->id)
+        ->assertStatus(302)
+        ->assertRedirect('product');
+
+    $this->assertDatabaseMissing('products', $product->toArray());
+});
