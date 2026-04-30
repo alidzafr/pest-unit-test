@@ -70,3 +70,26 @@ test('guest cannot access create', function () {
     $this->actingAs($user)->get('/product/create')
         ->assertStatus(403);
 });
+
+test('create product success', function () {
+    $adminRole = Role::create(['name' => 'admin']);
+
+    $admin = User::factory()->create();
+    $admin->assignRole($adminRole);
+
+    $product = [
+        'name' => 'Work',
+        'price' => '400'
+    ];
+
+    $this->actingAs($admin)
+        ->post('/product', $product)
+        ->assertStatus(302)
+        ->assertRedirect('product');
+
+    $this->assertDatabaseHas('products', $product);
+
+    $lastProduct = Product::latest()->first();
+    expect($lastProduct->name)->toBe($product['name']);
+    expect($lastProduct->price)->toBeInt($product['price']);
+});
