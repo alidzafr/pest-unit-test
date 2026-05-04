@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Api\ProductController as ApiProductCtr;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,8 @@ Route::put('product/edit/{products}', [ProductController::class, 'update'])->mid
 Route::delete('product/delete/{products}', [ProductController::class, 'delete'])->middleware('role:admin');
 // Route::get('product/edit/{products}', [ProductController::class, 'edit'])->name('products.edit')->middleware('role:owner');
 
+Route::get('/api/product', [ApiProductCtr::class, 'index']);
+Route::post('/api/product', [ApiProductCtr::class, 'store']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

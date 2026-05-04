@@ -141,3 +141,31 @@ test('delete product', function () {
 
     $this->assertDatabaseMissing('products', $product->toArray());
 });
+
+test('api return product list', function () {
+    $product = Product::factory()->create();
+
+    $this->getJson('/api/product')
+        ->assertJson([$product->toArray()]);
+});
+
+test('api product store successful', function () {
+    $product = [
+        'name' => 'product 1',
+        'price' => 80
+    ];
+
+    $this->postJson('/api/product', $product)
+        ->assertStatus(201)
+        ->assertJson($product);
+});
+
+test('api product invalid store return error', function () {
+    $product = [
+        'name' => '',
+        'price' => '123'
+    ];
+
+    $this->postJson('/api/product', $product)
+        ->assertStatus(422);
+});
