@@ -12,11 +12,11 @@ Route::get('/', function () {
 Route::get('product', [ProductController::class, 'index'])->middleware('auth')->name('product.index');
 Route::get('product/create', [ProductController::class, 'create'])->middleware('role:admin');
 Route::post('product/', [ProductController::class, 'store'])->middleware('role:admin');
-Route::get('product/edit/{products}', [ProductController::class, 'edit'])->middleware('role:admin');
-Route::put('product/edit/{products}', [ProductController::class, 'update'])->middleware('role:admin');
-Route::delete('product/delete/{products}', [ProductController::class, 'delete'])->middleware('role:admin');
-// Route::get('product/edit/{products}', [ProductController::class, 'edit'])->name('products.edit')->middleware('role:owner');
+Route::get('product/{products}/edit', [ProductController::class, 'edit'])->middleware('role:admin');
+Route::put('product/{products}/edit', [ProductController::class, 'update'])->middleware('role:admin');
+Route::delete('product/{products}/delete', [ProductController::class, 'delete'])->middleware('role:admin');
 
+// api
 Route::get('/api/product', [ApiProductCtr::class, 'index']);
 Route::post('/api/product', [ApiProductCtr::class, 'store']);
 

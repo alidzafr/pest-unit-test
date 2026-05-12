@@ -103,7 +103,7 @@ test('edit contains correct value', function () {
     $product = Product::factory()->create();
 
     $this->actingAs($admin)
-        ->get('product/edit/' . $product->id)
+        ->get('product/' . $product->id . '/edit')
         ->assertStatus(200)
         ->assertSee('value="' . $product->name . '"', false)
         ->assertSee('value="' . $product->price . '"', false);
@@ -118,7 +118,7 @@ test('validation error redirect to form', function () {
     $product = Product::factory()->create();
 
     $this->actingAs($admin)
-        ->put('product/edit/' . $product->id, [
+        ->put('product/' . $product->id . '/edit', [
             'name' => '',
             'price' => ''
         ])
@@ -135,7 +135,7 @@ test('delete product', function () {
     $product = Product::factory()->create();
 
     $this->actingAs($admin)
-        ->delete('product/delete/' . $product->id)
+        ->delete('product/' . $product->id . '/delete')
         ->assertStatus(302)
         ->assertRedirect('product');
 
