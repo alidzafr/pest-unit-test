@@ -80,9 +80,9 @@ test('create product success', function () {
 
     $product = [
         'name' => 'Work Emotion CR',
-        'price' => '220',
-        'quantity' => '100',
-        'min_threshold' => '20',
+        'price' => 220,
+        'quantity' => 100,
+        'min_threshold' => 20,
         'expiry_date' => Carbon::now(),
         'availability' => 'In-stock'
     ];
@@ -101,6 +101,7 @@ test('create product success', function () {
     $lastProduct = Product::latest()->first();
     expect($lastProduct->name)->toBe($product['name']);
     expect($lastProduct->price)->toBeInt($product['price']);
+    expect($lastProduct->quantity)->toBeInt($product['quantity']);
 });
 
 test('edit contains correct value', function () {
@@ -164,7 +165,7 @@ test('api product store successful', function () {
         'price' => 80,
         'quantity' => 100,
         'min_threshold' => 20,
-        'expiry_date' => Carbon::now(),
+        'expiry_date' => fake()->date(),
         'availability' => 'In-stock'
     ];
 
