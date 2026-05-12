@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price', 8, 2);
+            $table->integer('quantity');
+            $table->integer('min_threshold');
+            $table->date('expiry_date');
+            $table->enum('availability', ['In-stock', 'Out of stock']);
             $table->timestamps();
         });
     }

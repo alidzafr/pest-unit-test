@@ -19,7 +19,11 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->text(20),
-            'price' => rand(100, 999)
+            'price' => rand(100, 999),
+            'quantity' => rand(30, 100),
+            'min_threshold' => rand(10, 30),
+            'expiry_date' => fake()->date(),
+            'availability' => fake()->randomElement(['In-stock', 'Out of stock'])
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 
 test('unauth user cannot access product', function () {
@@ -19,7 +20,7 @@ test('empty table', function () {
 test('homepage contain filled table', function () {
     $user = User::factory()->create();
 
-    $product = Product::create([
+    $product = Product::factory()->create([
         'name' => 'Rays TE37',
         'price' => 123
     ]);
@@ -78,9 +79,17 @@ test('create product success', function () {
     $admin->assignRole($adminRole);
 
     $product = [
-        'name' => 'Work',
-        'price' => '400'
+        'name' => 'Work Emotion CR',
+        'price' => '220',
+        'quantity' => '100',
+        'min_threshold' => '20',
+        'expiry_date' => Carbon::now(),
+        'availability' => 'In-stock'
     ];
+
+    // $product = Product::factory()->make()->toArray();
+    // dd($product);
+
 
     $this->actingAs($admin)
         ->post('/product', $product)
@@ -152,7 +161,11 @@ test('api return product list', function () {
 test('api product store successful', function () {
     $product = [
         'name' => 'product 1',
-        'price' => 80
+        'price' => 80,
+        'quantity' => 100,
+        'min_threshold' => 20,
+        'expiry_date' => Carbon::now(),
+        'availability' => 'In-stock'
     ];
 
     $this->postJson('/api/product', $product)
