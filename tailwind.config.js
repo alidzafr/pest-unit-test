@@ -17,5 +17,13 @@ export default {
         },
     },
 
-    plugins: [forms],
+    daisyui: {
+        themes: ["light"],
+    },
+
+    plugins: [
+        forms,
+        require("@tailwindcss/typography"),
+        require('daisyui'),
+    ],
 };
